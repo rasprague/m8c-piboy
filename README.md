@@ -47,6 +47,19 @@ cd m8c-piboy
 make
  ```
 
+### Make shell scripts user executable
+```
+chmod u+x m8c*.sh
+```
+
+### Enable PiBoy DMG built-in controller support
+A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
+
+```
+makedir -p ~/.local/share/m8c && cd ~/.local/share/m8c
+ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
+```
+
 # orignal m8c README
 # m8c
 
