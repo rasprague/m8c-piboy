@@ -1,3 +1,53 @@
+# m8c-piboy
+
+Changes (hacks) to [m8c](https://github.com/laamaa/m8c) for use on a PiBoy DMG. Tested on Raspberry Pi 3 B+ and the official RetroPie distribution.
+
+# Requirements
+- A working [m8 headless](https://github.com/Dirtywave/M8HeadlessFirmware) setup on a Teensy 4.1
+- A PiBoy DMG with RetroPie installed
+
+# Installation
+
+## Linux / Raspberry Pi (building from source)
+
+These instructions are tested with Raspberry Pi 3 B+ and Raspberry Pi OS with desktop (March 4 2021 release), but should apply for other Debian/Ubuntu flavors as well. The begining on the build process on OSX is slightly different at the start, and then the same once packages are installed.
+
+The instructions assume that you already have a working Linux desktop installation with an internet connection.
+
+Open Terminal and run the following commands:
+
+### Install required packages (Raspberry Pi, Linux)
+
+```
+sudo apt update && sudo apt install -y git gcc make libsdl2-dev
+```
+
+### Build and install libserialport from source
+Required since the libserialport-dev apt package is out of date
+
+follow the README at https://github.com/sigrokproject/libserialport
+
+then run
+```
+ldconfig
+```
+to ensure the library is found when building m8c
+
+### Download source code (All)
+
+```
+mkdir code && cd code
+git clone https://github.com/rasprague/m8c-piboy.git
+ ```
+
+### Build the program
+
+```
+cd m8c-piboy
+make
+ ```
+
+# orignal m8c README
 # m8c
 
 m8c is a client for Dirtywave M8 tracker's headless mode. The application should be cross-platform ready and can be built in Linux, Windows (with MSYS2/MINGW64) and Mac OS.
