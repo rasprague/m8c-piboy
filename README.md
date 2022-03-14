@@ -1,10 +1,15 @@
 # m8c-piboy
 
-Changes (hacks) to [m8c](https://github.com/laamaa/m8c) for use on a PiBoy DMG. Tested on Raspberry Pi 3 B+ and the official RetroPie distribution.
+Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on the PiBoy DMG. Tested on Raspberry Pi 3 B+ and the official RetroPie distribution.
+
+# Thanks to
+- [laamaa](https://github.com/laamaa) for the [cross-platform m8c client](https://github.com/laamaa/m8c)
+- [DirtyWave](https://github.com/Dirtywave) for the excellent M8 Tracker and [m8 headless firmware](https://github.com/Dirtywave/M8HeadlessFirmware)
+- u/rhinofinger for [this reddit post](https://www.reddit.com/r/RetroPie/comments/lurmu0/pico8_in_retropie_easy_uptodate_tutorial_with/) that clued me in on how to add entries into EmulationStation
 
 # Requirements
 - A working [m8 headless](https://github.com/Dirtywave/M8HeadlessFirmware) setup on a Teensy 4.1
-- A PiBoy DMG with RetroPie installed
+- A PiBoy DMG with RetroPie installed and set up
 
 # Installation
 
@@ -47,6 +52,41 @@ cd m8c-piboy
 make
  ```
 
+### Make shell scripts user executable
+```
+chmod u+x m8c*.sh
+```
+
+### Enable PiBoy DMG built-in controller support
+A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
+
+```
+makedir -p ~/.local/share/m8c && cd ~/.local/share/m8c
+ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
+```
+
+### Install JACK for audio routing
+See AUDIOGUIDE.md for the details
+
+```
+sudo apt install jackd2
+sudo usermod -a -G audio pi
+```
+
+### Try it out!
+```
+/home/pi/code/m8c-piboy/m8c.sh
+```
+
+# Adding m8c to EmulationStation
+- go to /home/pi/.emulationstation/
+- append the contenst of this repo's file es_systems.cfg.m8c.paste.txt to es_systems.cfg (just before the ```</systemList>``` line) in that folder (/home/pi/.emulationstation/es_systems.cfg)
+- restart EmulationStation
+
+If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/, first copy the es_systems.cfg file that's in /etc/emulationstation/ into /home/pi/.emulationstation/.
+
+This adds Pico-8 to your emulationstation game console selection menu.
+---
 # orignal m8c README
 # m8c
 
