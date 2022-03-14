@@ -96,7 +96,8 @@ If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/,
 
 - restart EmulationStation
 
-This adds Pico-8 to your emulationstation game console selection menu.
+This adds "M8 Tracker" to your EmulationStation game console selection menu.
+
 ---
 # orignal m8c README
 # m8c
