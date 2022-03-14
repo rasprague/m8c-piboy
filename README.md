@@ -78,6 +78,14 @@ sudo usermod -a -G audio pi
 /home/pi/code/m8c-piboy/m8c.sh
 ```
 
+# Adding m8c to EmulationStation
+- go to /home/pi/.emulationstation/
+- append the contenst of this repo's file es_systems.cfg.m8c.paste.txt to es_systems.cfg (just before the ```</systemList>``` line) in that folder (/home/pi/.emulationstation/es_systems.cfg)
+- restart EmulationStation
+
+If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/, first copy the es_systems.cfg file that's in /etc/emulationstation/ into /home/pi/.emulationstation/.
+
+This adds Pico-8 to your emulationstation game console selection menu.
 ---
 # orignal m8c README
 # m8c
