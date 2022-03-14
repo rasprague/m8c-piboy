@@ -66,6 +66,11 @@ int main(int argc, char *argv[]) {
 
   uint8_t prev_input = 0;
 
+  // HACK force game controllers scan
+  // do it twice and your PiBoy controls will work just nice
+  initialize_game_controllers();
+  initialize_game_controllers();
+
   // main loop
   while (run) {
 
