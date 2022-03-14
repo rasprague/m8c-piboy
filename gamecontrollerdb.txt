@@ -970,4 +970,4 @@ xinput,XInput Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,
 050000005e040000e0020000ff070000,Xbox Wireless Controller,a:b0,b:b1,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b9,leftshoulder:b4,leftstick:b6,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b7,righttrigger:a5,rightx:a3,righty:a4,start:b10,x:b2,y:b3,platform:iOS,
 
 # PiBoy DMG
-15000000010000000100000000010000,PiBoy DMG Controller,platform:Linux,a:b1,b:b0,x:b4,y:b3,back:b8,start:b9,leftstick:b10,leftshoulder:b7,rightshoulder:b6,dpup:b12,dpdown:b11,dpleft:b13,dpright:b14,leftx:a0,lefty:a1,lefttrigger:b2,righttrigger:b5,
+15000000010000000100000000010000,PiBoy DMG Controller,platform:Linux,a:b0,b:b1,x:b4,y:b3,back:b8,start:b9,leftstick:b10,leftshoulder:b7,rightshoulder:b6,dpup:b12,dpdown:b11,dpleft:b13,dpright:b14,leftx:a0,lefty:a1,lefttrigger:b2,righttrigger:b5,
