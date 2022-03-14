@@ -2,6 +2,8 @@
 
 Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on the PiBoy DMG. Tested on Raspberry Pi 3 B+ and the official RetroPie distribution.
 
+Let's all enjoy the M8 software in a GameBoy style, while we wait for the official M8 hardware!
+
 ### Notable changes
 - [HACK force game controllers scan for PiBoy](https://github.com/rasprague/m8c-piboy/commit/f43110a650ecbf0918eba05c9e898f03cdaa4bdf)
 - [add SDL controller line for PiBoy DMG to gamecontrollerdb.txt](https://github.com/rasprague/m8c-piboy/commit/7e59edb765d3f883a72e8de655d1eea0271f27e7)
@@ -89,9 +91,10 @@ sudo usermod -a -G audio pi
 # Adding m8c to EmulationStation
 - go to /home/pi/.emulationstation/
 - append the contenst of this repo's file es_systems.cfg.m8c.paste.txt to es_systems.cfg (just before the ```</systemList>``` line) in that folder (/home/pi/.emulationstation/es_systems.cfg)
-- restart EmulationStation
 
 If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/, first copy the es_systems.cfg file that's in /etc/emulationstation/ into /home/pi/.emulationstation/.
+
+- restart EmulationStation
 
 This adds Pico-8 to your emulationstation game console selection menu.
 ---
