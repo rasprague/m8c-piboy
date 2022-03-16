@@ -85,6 +85,13 @@ sudo apt install jackd2
 sudo usermod -a -G audio pi
 ```
 
+### Optional: allow JACKD to use realtime scheduling
+```
+sudo mv /etc/security/limits.d/audio.conf.disabled /etc/security/limits.d/audio.conf
+```
+
+then restart your system
+
 ### Try it out!
 ```
 /home/pi/code/m8c-piboy/m8c.sh
