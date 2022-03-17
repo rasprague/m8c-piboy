@@ -105,7 +105,7 @@ If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/,
 
 - restart EmulationStation
 
-This adds "M8 Tracker" to your EmulationStation game console selection menu.
+This adds "m8" to your EmulationStation game console selection menu.
 
 ---
 # orignal m8c README
