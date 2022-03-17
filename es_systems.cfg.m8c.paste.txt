@@ -4,6 +4,6 @@
     <path>/home/pi/code/m8c-piboy</path>
     <extension>.sh</extension>
     <command>%ROM%</command>
-    <platform>m8</platform>
+    <platform>ignore</platform>
     <theme>m8</theme>
   </system>
