@@ -1,5 +1,5 @@
   <system>
-    <name>m8 tracker</name>
+    <name>m8</name>
     <fullname>M8 Tracker</fullname>
     <path>/home/pi/code/m8c-piboy</path>
     <extension>.sh</extension>
