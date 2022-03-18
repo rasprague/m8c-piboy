@@ -73,7 +73,7 @@ chmod u+x m8c*.sh
 A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
 
 ```
-makedir -p ~/.local/share/m8c && cd ~/.local/share/m8c
+mkdir -p ~/.local/share/m8c && cd ~/.local/share/m8c
 ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
 ```
 
