@@ -21,7 +21,7 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 # Requirements
 - A working [m8 headless](https://github.com/Dirtywave/M8HeadlessFirmware) setup on a Teensy 4.1
-- A PiBoy DMG with RetroPie installed and set up
+- A PiBoy DMG with RetroPie installed and set up, see [the PiBoy DMG Getting Started guide](https://resources.experimentalpi.com/the-complete-piboy-dmg-getting-started-guide/)
 
 # Installation
 
