@@ -1,7 +1,7 @@
   <system>
     <name>m8</name>
     <fullname>M8 Tracker</fullname>
-    <path>/home/pi/code/m8c-piboy</path>
+    <path>/home/pi/RetroPie/roms/m8</path>
     <extension>.sh</extension>
     <command>%ROM%</command>
     <platform>ignore</platform>
