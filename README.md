@@ -73,7 +73,6 @@ chmod u+x m8c*.sh
 ```
 /home/pi/code/m8c-piboy/m8c-nojack.sh
 ```
-
 then Ctrl-C to quit
 
 ### Enable PiBoy DMG built-in controller support
@@ -88,8 +87,6 @@ ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
 in ~/.local/share/m8c/config.ini
 
 change
-
-
 ```
 gamepad_opt=1
 gamepad_edit=0
@@ -121,6 +118,14 @@ then restart your system
 ```
 
 # Adding m8c to EmulationStation
+
+### Install m8c 'ROMs'
+```
+mkdir -p /home/pi/RetroPie/roms/m8 && cd /home/pi/RetroPie/roms/m8
+ln -s /home/pi/code/m8c-piboy/*.sh .
+```
+
+### Add m8 system entry
 - go to /home/pi/.emulationstation/
 - append the contents of this repo's file es_systems.cfg.m8c.paste.txt to the bottom of es_systems.cfg (just before the ```</systemList>``` line) in that folder (/home/pi/.emulationstation/es_systems.cfg)
 
