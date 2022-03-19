@@ -69,12 +69,35 @@ make
 chmod u+x m8c*.sh
 ```
 
+### Start m8c once to generate config files
+```
+/home/pi/code/m8c-piboy/m8c-nojack.sh
+```
+
+then Ctrl-C to quit
+
 ### Enable PiBoy DMG built-in controller support
 A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
 
 ```
-mkdir -p ~/.local/share/m8c && cd ~/.local/share/m8c
+cd ~/.local/share/m8c
 ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
+```
+
+### Optional: swap A and B buttons
+in ~/.local/share/m8c/config.ini
+
+change
+
+
+```
+gamepad_opt=1
+gamepad_edit=0
+```
+to
+```
+gamepad_opt=0
+gamepad_edit=1
 ```
 
 ### Install JACK for audio routing
