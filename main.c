@@ -72,7 +72,9 @@ int main(int argc, char *argv[]) {
   initialize_game_controllers();
 
   // force disable mouse cursor
-  SDL_ShowCursor(SDL_DISABLE);
+  if (conf.init_disable_cursor) {
+    SDL_ShowCursor(SDL_DISABLE);
+  }
 
   // main loop
   while (run) {

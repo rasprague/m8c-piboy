@@ -10,7 +10,8 @@ config_params_s init_config() {
   c.filename = "config.ini"; // default config file to load
 
   c.init_fullscreen = 0; // default fullscreen state at load
-
+  c.init_disable_cursor = 0;
+  
   c.key_up = SDL_SCANCODE_UP;
   c.key_left = SDL_SCANCODE_LEFT;
   c.key_down = SDL_SCANCODE_DOWN;
@@ -150,6 +151,13 @@ void read_graphics_config(ini_t *ini, config_params_s *conf) {
     conf->init_fullscreen = 1;
   } else
     conf->init_fullscreen = 0;
+
+  param = ini_get(ini, "graphics", "disable_cursor");
+  if (strcmp(param, "true") == 0) {
+    conf->init_disable_cursor = 1;
+  } else
+    conf->init_disable_cursor = 0;
+  
 }
 
 void read_key_config(ini_t *ini, config_params_s *conf) {
