@@ -29,7 +29,7 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 These instructions are tested with Raspberry Pi 3 B+ and the official RetroPie distribution.
 
-The instructions assume that you already have a working Linux desktop installation with an internet connection.
+The instructions assume that you already have a working Retropie installation with an internet connection.
 
 Open Terminal or SSH into you Pi and run the following commands:
 
