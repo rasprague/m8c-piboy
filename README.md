@@ -12,7 +12,8 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 - [add m8c startup shell scripts](https://github.com/rasprague/m8c-piboy/commit/f0b0909de3c5786992d8b540f5d09f841aeb7e33)
 - [add two button combinations](https://github.com/rasprague/m8c-piboy/commit/0824b32c62525132de2850b9acddffaf9ea78fff)
   - select + opt + up = reset display
-  - select + opt + down = quit program 
+  - select + opt + down = quit program
+- [add disable_cursor option to config](https://github.com/rasprague/m8c-piboy/commit/6844d93705db2d0330ded2f62bad6b60b798af90)
 
 # Thanks to
 - [laamaa](https://github.com/laamaa) for the [cross-platform m8c client](https://github.com/laamaa/m8c)
