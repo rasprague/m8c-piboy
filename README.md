@@ -1,6 +1,6 @@
 # m8c-piboy
 
-Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on the PiBoy DMG. Tested on Raspberry Pi 3 B+ and the official RetroPie distribution.
+Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on the PiBoy DMG. Tested on Raspberry Pi 3 B+, reported working on the Raspberry Pi 4, and the official RetroPie distribution.
 
 Let's all enjoy the M8 software in a GameBoy style, while we wait for the official M8 hardware!
 
@@ -73,7 +73,7 @@ chmod u+x m8c*.sh
 A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
 
 ```
-makedir -p ~/.local/share/m8c && cd ~/.local/share/m8c
+mkdir -p ~/.local/share/m8c && cd ~/.local/share/m8c
 ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
 ```
 
