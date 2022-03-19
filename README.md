@@ -135,6 +135,38 @@ If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/,
 
 This adds "m8" to your EmulationStation game console selection menu.
 
+# Using a different audio output device (e.g. external USB sounds card)
+- find your audio device number with ```aplay -l```
+```
+pi@retropie:~ $ aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
+  Subdevices: 8/8
+  Subdevice #0: subdevice #0
+  Subdevice #1: subdevice #1
+  Subdevice #2: subdevice #2
+  Subdevice #3: subdevice #3
+  Subdevice #4: subdevice #4
+  Subdevice #5: subdevice #5
+  Subdevice #6: subdevice #6
+  Subdevice #7: subdevice #7
+card 1: CODEC [USB Audio CODEC], device 0: USB Audio [USB Audio]
+  Subdevices: 0/1
+  Subdevice #0: subdevice #0
+card 2: M8 [M8], device 0: USB Audio [USB Audio]
+  Subdevices: 0/1
+  Subdevice #0: subdevice #0
+```
+here we'll use card 1 as an example
+
+- in the m8 roms folder, make a copy of m8c.sh, e.g.
+```
+cd ~/RetroPie/roms/m8
+cp m8c.sh m8c-usbaudio.sh
+```
+- edit your new .sh file (e.g. m8c-usbaudio.sh), and at the top e.g. change ```HWOUTDEVICE=0``` to ```HWOUTDEVICE=1```
+- restart EmulationStation
+
 ---
 # orignal m8c README
 # m8c
