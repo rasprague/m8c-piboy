@@ -25,15 +25,15 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 # Installation
 
-## Linux / Raspberry Pi (building from source)
+## building from source
 
-These instructions are tested with Raspberry Pi 3 B+ and Raspberry Pi OS with desktop (March 4 2021 release), but should apply for other Debian/Ubuntu flavors as well. The begining on the build process on OSX is slightly different at the start, and then the same once packages are installed.
+These instructions are tested with Raspberry Pi 3 B+ and the official RetroPie distribution.
 
 The instructions assume that you already have a working Linux desktop installation with an internet connection.
 
-Open Terminal and run the following commands:
+Open Terminal or SSH into you Pi and run the following commands:
 
-### Install required packages (Raspberry Pi, Linux)
+### Install required packages
 
 ```
 sudo apt update && sudo apt install -y git gcc make libsdl2-dev
@@ -164,7 +164,7 @@ here we'll use card 1 as an example
 cd ~/RetroPie/roms/m8
 cp m8c.sh m8c-usbaudio.sh
 ```
-- edit your new .sh file (e.g. m8c-usbaudio.sh), and at the top e.g. change ```HWOUTDEVICE=0``` to ```HWOUTDEVICE=1```
+- edit your new .sh file (e.g. m8c-usbaudio.sh), and at the top change e.g. ```HWOUTDEVICE=0``` to ```HWOUTDEVICE=1```
 - restart EmulationStation
 
 ---
