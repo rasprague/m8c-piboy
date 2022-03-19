@@ -171,6 +171,7 @@ cd ~/RetroPie/roms/m8
 cp m8c.sh m8c-usbaudio.sh
 ```
 - edit your new .sh file (e.g. m8c-usbaudio.sh), and at the top change e.g. ```HWOUTDEVICE=0``` to ```HWOUTDEVICE=1```
+- Optioinal: enable audio input (if your audio interface supports it) by changning ```ENABLEINPUT=0``` to ```ENABLEINPUT=1``` 
 - restart EmulationStation
 
 ---
