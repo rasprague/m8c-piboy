@@ -14,6 +14,7 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
   - select + opt + up = reset display
   - select + opt + down = quit program
 - [add disable_cursor option to config](https://github.com/rasprague/m8c-piboy/commit/6844d93705db2d0330ded2f62bad6b60b798af90)
+- [add audio input support via ENABLEINPUT variable in shell script](https://github.com/rasprague/m8c-piboy/commit/a1e340c59833d3ff3dabb633da3b03291e77d7e2)
 
 # Thanks to
 - [laamaa](https://github.com/laamaa) for the [cross-platform m8c client](https://github.com/laamaa/m8c)
