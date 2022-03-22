@@ -15,14 +15,16 @@ done <<< "$OUTPUT"
 /opt/retropie/admin/joy2key/joy2key start
 SELECTION=$(eval $DIALOGCMD $CARDLIST)
 EXITSTATUS=$?
-echo "Selected card $SELECTION"
+if [ $EXITSTATUS = 0 ]; then
+    echo "Selected Card $SELECTION"
+else
+    echo "Cancelled."
+fi
 /opt/retropie/admin/joy2key/joy2key stop
 
 if [ $EXITSTATUS = 0 ]; then
-    echo ./m8c.sh --interface $SELECTION
     pushd /home/pi/code/m8c-piboy
+    echo ./m8c.sh --interface $SELECTION
     ./m8c.sh --interface $SELECTION
     popd
-else
-    echo "Cancelled."
 fi
