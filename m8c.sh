@@ -1,7 +1,36 @@
 #!/bin/bash
+
 HWAUDIODEVICE=0
 ENABLEINPUT=0
 RATE=44100
+
+usage()
+{
+    echo "Usage $0"
+    echo "  options:"
+    echo "    [ -i | --interface ] <I> - use audio interface I, defaults to 0"
+    echo "      (see output from aplay -l command)"
+    echo "    [ -h | --help ] show this helpful message"
+}
+
+OPTIONS=$(getopt -o i:h --long interface:,help -- "$@")
+if [ $? -ne 0 ]; then
+    usage
+    exit 1
+fi
+
+eval set -- "$OPTIONS"
+
+while true; do
+    case "$1" in
+	-i|--interface)
+	    HWAUDIODEVICE=$2; shift 2 ;;
+	-h|--help)
+	    usage ; shift ; exit 0 ;;
+	--)
+	    shift ; break ;;
+    esac
+done
 
 # audio routing
 export JACK_NO_AUDIO_RESERVATION=1
