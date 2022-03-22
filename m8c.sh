@@ -10,10 +10,11 @@ usage()
     echo "  options:"
     echo "    [ -i | --interface ] <I> - use audio interface I, defaults to 0"
     echo "      (see output from aplay -l command)"
+    echo "    [ -e | --enable-input = enable audio input, defaults is off"
     echo "    [ -h | --help ] show this helpful message"
 }
 
-OPTIONS=$(getopt -o i:h --long interface:,help -- "$@")
+OPTIONS=$(getopt -o i:eh --long interface:,enable-input,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
     exit 1
@@ -25,6 +26,8 @@ while true; do
     case "$1" in
 	-i|--interface)
 	    HWAUDIODEVICE=$2; shift 2 ;;
+	-e | --enable-input)
+	    ENABLEINPUT=1 ; shift ;;
 	-h|--help)
 	    usage ; shift ; exit 0 ;;
 	--)

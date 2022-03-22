@@ -1,8 +1,9 @@
 #!/bin/bash
 
 DIALOGCMD="dialog --stdout --title \"M8 Tracker Client\" --menu \"Choose an Audio Interface\" 20 80 20"
-
+AUDIOINCMD="dialog --stdout --title \"M8 Tracker Client\" --defaultno --yesno \"Enable Audio Input?\" 6 25"
 CARDLIST=""
+AUDIOIN=""
 I=0
 
 OUTPUT=$(aplay -l | grep ^card)
@@ -17,6 +18,12 @@ SELECTION=$(eval $DIALOGCMD $CARDLIST)
 EXITSTATUS=$?
 if [ $EXITSTATUS = 0 ]; then
     echo "Selected Card $SELECTION"
+    eval $AUDIOINCMD
+    case $? in
+	0) AUDIOIN="--enable-input" ;;
+	1) ;;
+	2) echo "Cancelled." ; EXITSTATUS=1 ;;
+    esac
 else
     echo "Cancelled."
 fi
@@ -24,7 +31,7 @@ fi
 
 if [ $EXITSTATUS = 0 ]; then
     pushd /home/pi/code/m8c-piboy
-    echo ./m8c.sh --interface $SELECTION
-    ./m8c.sh --interface $SELECTION
+    echo ./m8c.sh --interface $SELECTION $AUDIOIN
+    ./m8c.sh --interface $SELECTION $AUDIOIN
     popd
 fi
