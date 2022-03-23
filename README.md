@@ -143,6 +143,13 @@ If you don't already have an es_systems.cfg file in /home/pi/.emulationstation/,
 This adds "m8" to your EmulationStation game console selection menu.
 
 # Using a different audio output device (e.g. external USB sounds card)
+
+You have a couple of options
+
+## Choose audio interface at startup
+run m8c-choose.sh and choose you audio interface options from the dialogs
+
+## Make a custom startup script
 - find your audio device number with ```aplay -l```
 ```
 pi@retropie:~ $ aplay -l
@@ -166,13 +173,14 @@ card 2: M8 [M8], device 0: USB Audio [USB Audio]
 ```
 here we'll use card 1 as an example
 
-- in the m8 roms folder, make a copy of m8c.sh, e.g.
+- in the m8 roms folder, make a copy of m8c-custom.sh.example, e.g.
 ```
 cd ~/RetroPie/roms/m8
-cp m8c.sh m8c-usbaudio.sh
+cp ~/code/m8c-piboy/m8c-custom.sh.example ./m8c-usbaudio.sh
 ```
 - edit your new .sh file (e.g. m8c-usbaudio.sh), and at the top change e.g. ```HWAUDIODEVICE=0``` to ```HWAUDIODEVICE=1```
-- Optioinal: enable audio input (if your audio interface supports it) by changning ```ENABLEINPUT=0``` to ```ENABLEINPUT=1``` 
+- Optioinal: enable audio input (if your audio interface supports it) by changning ```ENABLEINPUT=0``` to ```ENABLEINPUT=1```
+- make your new .sh file (e.g. m8c-usbaudio.sh) executable with ```chmod u+x m8c-usbaudio.sh```
 - restart EmulationStation
 
 ---
