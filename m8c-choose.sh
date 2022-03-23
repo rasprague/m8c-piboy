@@ -1,14 +1,13 @@
 #!/bin/bash
 
-DIALOGCMD="dialog --stdout --title \"M8 Tracker Client\" --menu \"Choose an Audio Interface\" 20 80 20"
-AUDIOINCMD="dialog --stdout --title \"M8 Tracker Client\" --defaultno --yesno \"Enable Audio Input?\" 6 25"
+DIALOGCMD="dialog --stdout --title \"m8-headless tracker client for Piboy DMG\" --menu \"Choose an Audio Interface\" 20 80 20"
+AUDIOINCMD="dialog --stdout --title \"m8-headless tracker client for Piboy DMG\" --defaultno --yesno \"Enable Audio Input?\" 6 25"
 CARDLIST=""
 AUDIOIN=""
 I=0
 
 OUTPUT=$(aplay -l | grep ^card)
 while read line; do
-    #echo "CARD: " $I $line
     CARDLIST="$CARDLIST $I \"$line\""
     ((I=I+1))
 done <<< "$OUTPUT"
