@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# requires naconnect installed at ~/code/naconnect
+# requires naconnect installed at ~/code/naconnect/naconnect
 # $ sudo apt install libncurses-dev
 # $ mkdir -p ~/code && cd ~/code
 # $ git clone https://github.com/dctucker/naconnect.git && cd naconnect
