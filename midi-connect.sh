@@ -8,10 +8,14 @@
 
 # button-to-keyboard mappings:
 # * cursor keys for axis/dpad
-# * c, d, TAB and q for buttons 'a', 'b', 'x' and 'y'
-# * r, r for buttons 5,6 (shoulder buttons)
-params=(kcub1 kcuf1 kcuu1 kcud1 0x63 0x64 0x09 0x71 0x72 0x72)
+# * c (0x63),d (0x64),q (0x71),TAB (0x09) for buttons 'a','b','x','y'
+# * r (0x72),r for buttons lt,rt (shoulder buttons)
+#          l    r     u     d    a    b    x    y   lt   rt
+params=(0x09 0x09 kcuu1 kcud1 0x63 0x64 0x71 0x09 0x72 0x72)
 
 /opt/retropie/admin/joy2key/joy2key start "${params[@]}"
 ~/code/naconnect/naconnect
+echo "Quitting . . ."
 /opt/retropie/admin/joy2key/joy2key stop
+echo "Done."
+clear
