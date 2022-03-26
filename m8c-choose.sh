@@ -20,12 +20,12 @@ if [ $EXITSTATUS = 0 ]; then
     echo "Selected Card $SELECTION"
     eval $AUDIOINCMD
     case $? in
-	# yes
-	0) OPTIONS+=" --enable-input" ;;
-	# no
-	1) ;;
-	# [ESC]
-	255) echo "Cancelled." ; EXITSTATUS=1 ;;
+        # yes
+        0) OPTIONS+=" --enable-input" ;;
+        # no
+        1) ;;
+        # [ESC]
+        255) echo "Cancelled." ; EXITSTATUS=1 ;;
     esac
 else
     echo "Cancelled."
@@ -38,3 +38,5 @@ if [ $EXITSTATUS = 0 ]; then
     ./m8c.sh --interface $SELECTION $OPTIONS
     popd
 fi
+
+clear
