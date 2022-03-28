@@ -83,6 +83,7 @@ A line to make the PiBoy built-in controller visible to SDL has been added to ga
 
 ```
 cd ~/.local/share/m8c
+rm gamecontrollerdb.txt
 ln -s ~/code/m8c-piboy/gamecontrollerdb.txt .
 ```
 
