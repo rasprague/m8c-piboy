@@ -170,10 +170,12 @@ void read_graphics_config(ini_t *ini, config_params_s *conf) {
   const char *param_gpu = ini_get(ini, "graphics", "use_gpu");
   const char *param_cursor = ini_get(ini, "graphics", "disable_cursor");
 
-  if (strcmpci(param_fs, "true") == 0) {
-    conf->init_fullscreen = 1;
-  } else
-    conf->init_fullscreen = 0;  
+  if(param_gpu != NULL){
+    if (strcmpci(param_fs, "true") == 0) {
+      conf->init_fullscreen = 1;
+    } else
+      conf->init_fullscreen = 0;
+  }
 
   if(param_gpu != NULL){
     if (strcmpci(param_gpu, "true") == 0) {
