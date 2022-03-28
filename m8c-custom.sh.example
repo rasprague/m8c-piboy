@@ -5,6 +5,9 @@
 # see output from command aplay -l
 HWAUDIODEVICE=1
 
+# set this to the sample rate
+RATE=44100
+
 # set to 0 to disable audio input, 1 to enable audio input
 ENABLEINPUT=0
 
@@ -16,5 +19,5 @@ if [ ENABLEAUDIOINPUT = 1 ]; then
 fi
 
 pushd /home/pi/code/m8c-piboy
-./m8c.sh --interface $HWAUDIODEVICE $OPTIONS
+./m8c.sh --interface $HWAUDIODEVICE --rate $RATE $OPTIONS
 popd
