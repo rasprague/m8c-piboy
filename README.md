@@ -49,7 +49,7 @@ follow the README at https://github.com/sigrokproject/libserialport
 
 then run
 ```
-ldconfig
+sudo ldconfig
 ```
 to ensure the library is found when building m8c
 
