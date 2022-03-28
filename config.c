@@ -125,7 +125,7 @@ void write_config(config_params_s *conf) {
 
   if (rw != NULL) {
     // Write ini_values array to config file
-    for (int i = 0; i < 36; i++) {
+    for (int i = 0; i < initPointer; i++) {
       size_t len = SDL_strlen(ini_values[i]);
       if (SDL_RWwrite(rw, ini_values[i], 1, len) != len) {
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM,
