@@ -11,7 +11,7 @@ typedef struct config_params_s {
   int init_fullscreen;
   int init_use_gpu;
   int init_disable_cursor;
-  
+
   int key_up;
   int key_left;
   int key_down;
