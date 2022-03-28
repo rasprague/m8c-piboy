@@ -182,7 +182,7 @@ void read_graphics_config(ini_t *ini, config_params_s *conf) {
   }
 
   if(param_cursor != NULL){
-    if (strcmp(param_cursor, "true") == 0) {
+    if (strcmpci(param_cursor, "true") == 0) {
       conf->init_disable_cursor = 1;
     } else
       conf->init_disable_cursor = 0;
