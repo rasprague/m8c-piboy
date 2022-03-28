@@ -2,16 +2,30 @@
 // Released under the MIT licence, https://opensource.org/licenses/MIT
 
 #include "config.h"
+#include "ini.h"
 #include <SDL.h>
+
+/* Case insensitive string compare from ini.h library */
+static int strcmpci(const char *a, const char *b) {
+  for (;;) {
+    int d = tolower(*a) - tolower(*b);
+    if (d != 0 || !*a) {
+      return d;
+    }
+    a++, b++;
+  }
+}
 
 config_params_s init_config() {
   config_params_s c;
 
   c.filename = "config.ini"; // default config file to load
 
+
   c.init_fullscreen = 0; // default fullscreen state at load
+  c.init_use_gpu = 1;     // default to use hardware acceleration
   c.init_disable_cursor = 0;
-  
+
   c.key_up = SDL_SCANCODE_UP;
   c.key_left = SDL_SCANCODE_LEFT;
   c.key_down = SDL_SCANCODE_DOWN;
@@ -59,54 +73,59 @@ void write_config(config_params_s *conf) {
   SDL_Log("Writing config file to %s", config_path);
 
   // Entries for the config file
-  char ini_values[34][50];
-  sprintf(ini_values[0], "[graphics]\n");
-  sprintf(ini_values[1], "fullscreen=%s\n",
+  char ini_values[36][50];
+  int initPointer = 0;
+  sprintf(ini_values[initPointer++], "[graphics]\n");
+  sprintf(ini_values[initPointer++], "fullscreen=%s\n",
           conf->init_fullscreen ? "true" : "false");
-  sprintf(ini_values[2], "[keyboard]\n");
-  sprintf(ini_values[3], "key_up=%d\n", conf->key_up);
-  sprintf(ini_values[4], "key_left=%d\n", conf->key_left);
-  sprintf(ini_values[5], "key_down=%d\n", conf->key_down);
-  sprintf(ini_values[6], "key_right=%d\n", conf->key_right);
-  sprintf(ini_values[7], "key_select=%d\n", conf->key_select);
-  sprintf(ini_values[8], "key_select_alt=%d\n", conf->key_select_alt);
-  sprintf(ini_values[9], "key_start=%d\n", conf->key_start);
-  sprintf(ini_values[10], "key_start_alt=%d\n", conf->key_start_alt);
-  sprintf(ini_values[11], "key_opt=%d\n", conf->key_opt);
-  sprintf(ini_values[12], "key_opt_alt=%d\n", conf->key_opt_alt);
-  sprintf(ini_values[13], "key_edit=%d\n", conf->key_edit);
-  sprintf(ini_values[14], "key_edit_alt=%d\n", conf->key_edit_alt);
-  sprintf(ini_values[15], "key_delete=%d\n", conf->key_delete);
-  sprintf(ini_values[16], "key_reset=%d\n", conf->key_reset);
-  sprintf(ini_values[17], "[gamepad]\n");
-  sprintf(ini_values[18], "gamepad_up=%d\n", conf->gamepad_up);
-  sprintf(ini_values[19], "gamepad_left=%d\n", conf->gamepad_left);
-  sprintf(ini_values[20], "gamepad_down=%d\n", conf->gamepad_down);
-  sprintf(ini_values[21], "gamepad_right=%d\n", conf->gamepad_right);
-  sprintf(ini_values[22], "gamepad_select=%d\n", conf->gamepad_select);
-  sprintf(ini_values[23], "gamepad_start=%d\n", conf->gamepad_start);
-  sprintf(ini_values[24], "gamepad_opt=%d\n", conf->gamepad_opt);
-  sprintf(ini_values[25], "gamepad_edit=%d\n", conf->gamepad_edit);
-  sprintf(ini_values[26], "gamepad_analog_threshold=%d\n",
+  sprintf(ini_values[initPointer++], "use_gpu=%s\n",
+          conf->init_use_gpu ? "true" : "false");
+  sprintf(ini_values[initPointer++], "disable_cursor=%s\n",
+          conf->init_disable_cursor ? "true" : "false");
+  sprintf(ini_values[initPointer++], "[keyboard]\n");
+  sprintf(ini_values[initPointer++], "key_up=%d\n", conf->key_up);
+  sprintf(ini_values[initPointer++], "key_left=%d\n", conf->key_left);
+  sprintf(ini_values[initPointer++], "key_down=%d\n", conf->key_down);
+  sprintf(ini_values[initPointer++], "key_right=%d\n", conf->key_right);
+  sprintf(ini_values[initPointer++], "key_select=%d\n", conf->key_select);
+  sprintf(ini_values[initPointer++], "key_select_alt=%d\n", conf->key_select_alt);
+  sprintf(ini_values[initPointer++], "key_start=%d\n", conf->key_start);
+  sprintf(ini_values[initPointer++], "key_start_alt=%d\n", conf->key_start_alt);
+  sprintf(ini_values[initPointer++], "key_opt=%d\n", conf->key_opt);
+  sprintf(ini_values[initPointer++], "key_opt_alt=%d\n", conf->key_opt_alt);
+  sprintf(ini_values[initPointer++], "key_edit=%d\n", conf->key_edit);
+  sprintf(ini_values[initPointer++], "key_edit_alt=%d\n", conf->key_edit_alt);
+  sprintf(ini_values[initPointer++], "key_delete=%d\n", conf->key_delete);
+  sprintf(ini_values[initPointer++], "key_reset=%d\n", conf->key_reset);
+  sprintf(ini_values[initPointer++], "[gamepad]\n");
+  sprintf(ini_values[initPointer++], "gamepad_up=%d\n", conf->gamepad_up);
+  sprintf(ini_values[initPointer++], "gamepad_left=%d\n", conf->gamepad_left);
+  sprintf(ini_values[initPointer++], "gamepad_down=%d\n", conf->gamepad_down);
+  sprintf(ini_values[initPointer++], "gamepad_right=%d\n", conf->gamepad_right);
+  sprintf(ini_values[initPointer++], "gamepad_select=%d\n", conf->gamepad_select);
+  sprintf(ini_values[initPointer++], "gamepad_start=%d\n", conf->gamepad_start);
+  sprintf(ini_values[initPointer++], "gamepad_opt=%d\n", conf->gamepad_opt);
+  sprintf(ini_values[initPointer++], "gamepad_edit=%d\n", conf->gamepad_edit);
+  sprintf(ini_values[initPointer++], "gamepad_analog_threshold=%d\n",
           conf->gamepad_analog_threshold);
-  sprintf(ini_values[27], "gamepad_analog_invert=%s\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_invert=%s\n",
           conf->gamepad_analog_invert ? "true" : "false");
-  sprintf(ini_values[28], "gamepad_analog_axis_updown=%d\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_axis_updown=%d\n",
           conf->gamepad_analog_axis_updown);
-  sprintf(ini_values[29], "gamepad_analog_axis_leftright=%d\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_axis_leftright=%d\n",
           conf->gamepad_analog_axis_leftright);
-  sprintf(ini_values[30], "gamepad_analog_axis_select=%d\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_axis_select=%d\n",
           conf->gamepad_analog_axis_select);
-  sprintf(ini_values[31], "gamepad_analog_axis_start=%d\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_axis_start=%d\n",
           conf->gamepad_analog_axis_start);
-  sprintf(ini_values[32], "gamepad_analog_axis_opt=%d\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_axis_opt=%d\n",
           conf->gamepad_analog_axis_opt);
-  sprintf(ini_values[33], "gamepad_analog_axis_edit=%d\n",
+  sprintf(ini_values[initPointer++], "gamepad_analog_axis_edit=%d\n",
           conf->gamepad_analog_axis_edit);
 
   if (rw != NULL) {
     // Write ini_values array to config file
-    for (int i = 0; i < 34; i++) {
+    for (int i = 0; i < 36; i++) {
       size_t len = SDL_strlen(ini_values[i]);
       if (SDL_RWwrite(rw, ini_values[i], 1, len) != len) {
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM,
@@ -141,23 +160,33 @@ void read_config(config_params_s *conf) {
 
   // Frees the mem used for the config
   ini_free(ini);
+
+  //Write any new default options after loading
+  write_config(conf);
 }
 
 void read_graphics_config(ini_t *ini, config_params_s *conf) {
-  const char *param = ini_get(ini, "graphics", "fullscreen");
-  // This obviously requires the parameter to be a lowercase true to enable
-  // fullscreen
-  if (strcmp(param, "true") == 0) {
+  const char *param_fs = ini_get(ini, "graphics", "fullscreen");
+  const char *param_gpu = ini_get(ini, "graphics", "use_gpu");
+  const char *param_cursor = ini_get(ini, "graphics", "disable_cursor");
+  if (strcmpci(param_fs, "true") == 0) {
     conf->init_fullscreen = 1;
   } else
-    conf->init_fullscreen = 0;
+    conf->init_fullscreen = 0;  
 
-  param = ini_get(ini, "graphics", "disable_cursor");
-  if (strcmp(param, "true") == 0) {
-    conf->init_disable_cursor = 1;
-  } else
-    conf->init_disable_cursor = 0;
-  
+  if(param_gpu != NULL){
+    if (strcmpci(param_gpu, "true") == 0) {
+      conf->init_use_gpu = 1;
+    } else
+      conf->init_use_gpu = 0;
+  }
+
+  if(param_cursor != NULL){
+    if (strcmp(param_cursor, "true") == 0) {
+      conf->init_disable_cursor = 1;
+    } else
+      conf->init_disable_cursor = 0;
+  }
 }
 
 void read_key_config(ini_t *ini, config_params_s *conf) {
@@ -255,8 +284,7 @@ void read_gamepad_config(ini_t *ini, config_params_s *conf) {
   if (gamepad_analog_threshold)
     conf->gamepad_analog_threshold = SDL_atoi(gamepad_analog_threshold);
 
-  // This requires the parameter to be a lowercase true to enable fullscreen
-  if (strcmp(gamepad_analog_invert, "true") == 0)
+  if (strcmpci(gamepad_analog_invert, "true") == 0)
     conf->gamepad_analog_invert = 1;
   else
     conf->gamepad_analog_invert = 0;
