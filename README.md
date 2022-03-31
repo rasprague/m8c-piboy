@@ -78,7 +78,7 @@ chmod u+x m8c*.sh
 ```
 then Ctrl-C to quit
 
-### Enable PiBoy DMG built-in controller support
+### Enable built-in controller support
 A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
 
 ```
