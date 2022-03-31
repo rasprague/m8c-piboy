@@ -101,6 +101,14 @@ gamepad_opt=0
 gamepad_edit=1
 ```
 
+### Optional: fix cursor movement
+if your cursor movement is messed up, set these two entries in ~/.local/share/m8c/config.ini
+
+```
+gamepad_analog_axis_select=-1
+gamepad_analog_axis_start=-1
+```
+
 ### Optional: disable mouse cursor
 in ~/.local/share/m8c/config.ini
 
