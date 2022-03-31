@@ -971,3 +971,6 @@ xinput,XInput Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,
 
 # PiBoy DMG
 15000000010000000100000000010000,PiBoy DMG Controller,platform:Linux,a:b1,b:b0,x:b4,y:b3,back:b8,start:b9,leftstick:b10,leftshoulder:b7,rightshoulder:b6,dpup:b12,dpdown:b11,dpleft:b13,dpright:b14,leftx:a0,lefty:a1,lefttrigger:b2,righttrigger:b5,
+
+# Waveshare game HAT
+15000000010000000500000000010000,mkarcadejoystick GPIO Controller,platform:Linux,a:b1,b:b0,x:b3,y:b2,back:b7,start:b6,leftshoulder:b5,rightshoulder:b4,leftx:a0,lefty:a1,
