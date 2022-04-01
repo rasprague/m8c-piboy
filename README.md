@@ -25,7 +25,10 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 # Requirements
 - A working [m8 headless](https://github.com/Dirtywave/M8HeadlessFirmware) setup on a Teensy 4.1
-- A PiBoy DMG with RetroPie installed and set up, see [the PiBoy DMG Getting Started guide](https://resources.experimentalpi.com/the-complete-piboy-dmg-getting-started-guide/)
+- A working Raspberry Pi / Retropie setup on one of the following handheld hardware:
+  - PiBoy DMG, see [the PiBoy DMG Getting Started guide](https://resources.experimentalpi.com/the-complete-piboy-dmg-getting-started-guide/)
+  - Waveshare Game HAT, see [the Game HAT Wiki](https://www.waveshare.com/wiki/Game_HAT) and [manual](https://www.waveshare.com/w/upload/2/22/Game_HAT_user_manual_en.pdf)
+  - other systems may work but will need additional support, e.g. you get it working and share your findings with us, or you can send me some hardware so I might get is working =]
 
 # Installation
 
