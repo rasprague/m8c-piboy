@@ -21,6 +21,7 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 - [laamaa](https://github.com/laamaa) for the [cross-platform m8c client](https://github.com/laamaa/m8c)
 - [DirtyWave](https://github.com/Dirtywave) for the excellent M8 Tracker and [m8 headless firmware](https://github.com/Dirtywave/M8HeadlessFirmware)
 - u/rhinofinger for [this reddit post](https://www.reddit.com/r/RetroPie/comments/lurmu0/pico8_in_retropie_easy_uptodate_tutorial_with/) that clued me in on how to add entries into EmulationStation
+- everyone testing this on their own hardware setups
 
 # Requirements
 - A working [m8 headless](https://github.com/Dirtywave/M8HeadlessFirmware) setup on a Teensy 4.1
