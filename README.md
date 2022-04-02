@@ -1,6 +1,11 @@
 # m8c-piboy
 
-Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on the PiBoy DMG. Tested on Raspberry Pi 3 B+ with RetroPie v4.7.1, reported working on Raspberry Pi 4. Also tested and working on a WaveShare Game HAT on Raspberry Pi 3 B+ with RetroPie v4.8.
+Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on
+- PiBoy DMG
+  - Tested on Raspberry Pi 3 B+ with RetroPie v4.7.1
+  - reported working on Raspberry Pi 4.
+- WaveShare Game HAT
+  - Tested on Raspberry Pi 3 B+ with RetroPie v4.8.
 
 Let's all enjoy the M8 software in a GameBoy style, while we wait for the official M8 hardware!
 
@@ -20,7 +25,7 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 # Thanks to
 - [laamaa](https://github.com/laamaa) for the [cross-platform m8c client](https://github.com/laamaa/m8c)
-- [DirtyWave](https://github.com/Dirtywave) for the excellent M8 Tracker and [m8 headless firmware](https://github.com/Dirtywave/M8HeadlessFirmware)
+- [DirtyWave](https://github.com/Dirtywave) and Trash80 for the excellent M8 Tracker and [m8 headless firmware](https://github.com/Dirtywave/M8HeadlessFirmware)
 - u/rhinofinger for [this reddit post](https://www.reddit.com/r/RetroPie/comments/lurmu0/pico8_in_retropie_easy_uptodate_tutorial_with/) that clued me in on how to add entries into EmulationStation
 - everyone testing this on their own hardware setups
 
@@ -58,10 +63,10 @@ sudo ldconfig
 ```
 to ensure the library is found when building m8c
 
-### Download source code (All)
+### Download source code
 
 ```
-mkdir code && cd code
+mkdir ~/code && cd ~/code
 git clone https://github.com/rasprague/m8c-piboy.git
  ```
 
@@ -84,7 +89,7 @@ chmod u+x m8c*.sh
 then Ctrl-C to quit
 
 ### Enable built-in controller support
-A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
+A line to make the PiBoy (and Game Hat) built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
 
 ```
 cd ~/.local/share/m8c
@@ -199,7 +204,7 @@ cp ~/code/m8c-piboy/m8c-custom.sh.example ./m8c-usbaudio.sh
 - restart EmulationStation
 
 ---
-# orignal m8c README
+# orignal m8c README below
 # m8c
 
 m8c is a client for Dirtywave M8 tracker's headless mode. The application should be cross-platform ready and can be built in Linux, Windows (with MSYS2/MINGW64) and Mac OS.
