@@ -1,6 +1,11 @@
 # m8c-piboy
 
-Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on the PiBoy DMG. Tested on Raspberry Pi 3 B+ with RetroPie v4.7.1, reported working on Raspberry Pi 4.
+Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on
+- PiBoy DMG
+  - Tested on Raspberry Pi 3 B+ with RetroPie v4.7.1
+  - reported working on Raspberry Pi 4.
+- WaveShare Game HAT
+  - Tested on Raspberry Pi 3 B+ with RetroPie v4.8.
 
 Let's all enjoy the M8 software in a GameBoy style, while we wait for the official M8 hardware!
 
@@ -9,6 +14,7 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 ### Notable changes
 - [HACK force game controllers scan for PiBoy](https://github.com/rasprague/m8c-piboy/commit/f43110a650ecbf0918eba05c9e898f03cdaa4bdf)
 - [add SDL controller line for PiBoy DMG to gamecontrollerdb.txt](https://github.com/rasprague/m8c-piboy/commit/7e59edb765d3f883a72e8de655d1eea0271f27e7)
+- [add game controller line for Waveshare Game HAT](https://github.com/rasprague/m8c-piboy/commit/4318ff1807f902c41fb0e88e37bf56413f16675e)
 - [add m8c startup shell scripts](https://github.com/rasprague/m8c-piboy/commit/f0b0909de3c5786992d8b540f5d09f841aeb7e33)
 - [add two button combinations](https://github.com/rasprague/m8c-piboy/commit/0824b32c62525132de2850b9acddffaf9ea78fff)
   - select + opt + up = reset display
@@ -19,12 +25,16 @@ See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 # Thanks to
 - [laamaa](https://github.com/laamaa) for the [cross-platform m8c client](https://github.com/laamaa/m8c)
-- [DirtyWave](https://github.com/Dirtywave) for the excellent M8 Tracker and [m8 headless firmware](https://github.com/Dirtywave/M8HeadlessFirmware)
+- [DirtyWave](https://github.com/Dirtywave) and Trash80 for the excellent M8 Tracker and [m8 headless firmware](https://github.com/Dirtywave/M8HeadlessFirmware)
 - u/rhinofinger for [this reddit post](https://www.reddit.com/r/RetroPie/comments/lurmu0/pico8_in_retropie_easy_uptodate_tutorial_with/) that clued me in on how to add entries into EmulationStation
+- everyone testing this on their own hardware setups
 
 # Requirements
 - A working [m8 headless](https://github.com/Dirtywave/M8HeadlessFirmware) setup on a Teensy 4.1
-- A PiBoy DMG with RetroPie installed and set up, see [the PiBoy DMG Getting Started guide](https://resources.experimentalpi.com/the-complete-piboy-dmg-getting-started-guide/)
+- A working Raspberry Pi / Retropie setup on one of the following handheld hardware:
+  - PiBoy DMG, see [the PiBoy DMG Getting Started guide](https://resources.experimentalpi.com/the-complete-piboy-dmg-getting-started-guide/)
+  - Waveshare Game HAT, see [the Game HAT Wiki](https://www.waveshare.com/wiki/Game_HAT) and [manual](https://www.waveshare.com/w/upload/2/22/Game_HAT_user_manual_en.pdf)
+  - other systems may work but will need additional support, e.g. you get it working and share your findings with us, or you can send me some hardware so I might get is working =]
 
 # Installation
 
@@ -53,10 +63,10 @@ sudo ldconfig
 ```
 to ensure the library is found when building m8c
 
-### Download source code (All)
+### Download source code
 
 ```
-mkdir code && cd code
+mkdir ~/code && cd ~/code
 git clone https://github.com/rasprague/m8c-piboy.git
  ```
 
@@ -78,8 +88,8 @@ chmod u+x m8c*.sh
 ```
 then Ctrl-C to quit
 
-### Enable PiBoy DMG built-in controller support
-A line to make the PiBoy built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
+### Enable built-in controller support
+A line to make the PiBoy (and Game Hat) built-in controller visible to SDL has been added to gamecontrollerdb.txt, we just need to point m8c to it.
 
 ```
 cd ~/.local/share/m8c
@@ -99,6 +109,14 @@ to
 ```
 gamepad_opt=0
 gamepad_edit=1
+```
+
+### Optional: fix cursor movement
+if your cursor movement is messed up, set these two entries in ~/.local/share/m8c/config.ini
+
+```
+gamepad_analog_axis_select=-1
+gamepad_analog_axis_start=-1
 ```
 
 ### Optional: disable mouse cursor
@@ -186,7 +204,7 @@ cp ~/code/m8c-piboy/m8c-custom.sh.example ./m8c-usbaudio.sh
 - restart EmulationStation
 
 ---
-# orignal m8c README
+# orignal m8c README below
 # m8c
 
 m8c is a client for Dirtywave M8 tracker's headless mode. The application should be cross-platform ready and can be built in Linux, Windows (with MSYS2/MINGW64) and Mac OS.
