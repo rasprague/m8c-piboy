@@ -1,7 +1,20 @@
 #!/bin/bash
 
-DIALOGCMD="dialog --stdout --title \"m8-headless tracker client for Piboy DMG\" --menu \"Choose an Audio Interface\" 20 80 20"
-AUDIOINCMD="dialog --stdout --title \"m8-headless tracker client for Piboy DMG\" --defaultno --yesno \"Enable Audio Input?\" 6 25"
+function joy2key_start {
+    echo "Starting joy2key . . ."
+    /opt/retropie/admin/joy2key/joy2key start
+}
+
+function joy2key_stop {
+    echo "Stopping joy2key . . ."
+    /opt/retropie/admin/joy2key/joy2key stop
+}
+
+trap joy2key_stop EXIT
+
+CARDCMD="dialog --stdout --title \"m8-headless tracker client\" --menu \"Choose an Audio Interface\" 20 80 20"
+RATECMD="dialog --stdout --title \"m8-headless tracker client\" --menu \"Choose a Sample Rate\" 10 30 20 0 44.1kHz 1 48kHz"
+AUDIOINCMD="dialog --stdout --title \"m8-headless tracker client\" --defaultno --yesno \"Enable Audio Input?\" 6 25"
 
 CARDLIST=""
 OPTIONS=""
@@ -13,30 +26,30 @@ while read line; do
     ((I=I+1))
 done <<< "$OUTPUT"
 
-/opt/retropie/admin/joy2key/joy2key start
-SELECTION=$(eval $DIALOGCMD $CARDLIST)
-EXITSTATUS=$?
-if [ $EXITSTATUS = 0 ]; then
-    echo "Selected Card $SELECTION"
-    eval $AUDIOINCMD
-    case $? in
-        # yes
-        0) OPTIONS+=" --enable-input" ;;
-        # no
-        1) ;;
-        # [ESC]
-        255) echo "Cancelled." ; EXITSTATUS=1 ;;
-    esac
-else
-    echo "Cancelled."
-fi
-/opt/retropie/admin/joy2key/joy2key stop
+joy2key_start
+CARD=$(eval $CARDCMD $CARDLIST)
+[ $? != 0 ] && echo "Cancelled." && exit 1
 
-if [ $EXITSTATUS = 0 ]; then
-    pushd /home/pi/code/m8c-piboy
-    echo ./m8c.sh --interface $SELECTION $OPTIONS
-    ./m8c.sh --interface $SELECTION $OPTIONS
-    popd
+RATE=$(eval $RATECMD)
+[ $? != 0 ] && echo "Cancelled." && exit 1
+if [ $RATE = 0 ]; then
+    RATE=44100
+elif [ $RATE = 1 ]; then
+    RATE=48000
 fi
 
-clear
+eval $AUDIOINCMD
+case $? in
+    # yes
+    0) OPTIONS+=" --enable-input" ;;
+    # no
+    1) ;;
+    # [ESC]
+    255) echo "Cancelled." ; exit 1 ;;
+esac    
+joy2key_stop
+
+pushd /home/pi/code/m8c-piboy
+echo ./m8c.sh --interface $CARD --rate $RATE $OPTIONS
+./m8c.sh --interface $CARD --rate $RATE $OPTIONS
+popd
