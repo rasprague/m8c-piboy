@@ -209,17 +209,17 @@ cp ~/code/m8c-piboy/m8c-custom.sh.example ./m8c-usbaudio.sh
 
 m8c is a client for Dirtywave M8 tracker's headless mode. The application should be cross-platform ready and can be built in Linux, Windows (with MSYS2/MINGW64) and Mac OS.
 
-Please note that routing the headless M8 USB audio isn't in the scope of this program -- if this is needed, it can be achieved with tools like jackd, alsa\_in and alsa\_out for example. Check out the guide in file AUDIOGUIDE.md for some instructions on routing the audio.
+Please note that routing the headless M8 USB audio isn't in the scope of this program -- if this is needed, it can be achieved with tools like Pipewire, Pulseaudio, Jack w/ alsa\_in and alsa\_out just to name a few. The file AUDIOGUIDE.md contains some examples for routing the audio.
+
+If you want to route audio with the headless client you could try https://github.com/booss/rm8 which is a great native client with audio support (among other user features)!
 
 Many thanks to:
 
-Trash80 for the great M8 hardware and the original font (stealth57.ttf) that was converted to a bitmap for use in the progam.
-
-driedfruit for a wonderful little routine to blit inline bitmap fonts, https://github.com/driedfruit/SDL_inprint/
-
-marcinbor85 for the slip handling routine, https://github.com/marcinbor85/slip
-
-turbolent for the great Golang-based g0m8 application, which I used as reference on how the M8 serial protocol works.
+* Trash80 for the great M8 hardware and the original font (stealth57.ttf) that was converted to a bitmap for use in the progam.
+* driedfruit for a wonderful little routine to blit inline bitmap fonts, https://github.com/driedfruit/SDL_inprint/
+* marcinbor85 for the slip handling routine, https://github.com/marcinbor85/slip
+* turbolent for the great Golang-based g0m8 application, which I used as reference on how the M8 serial protocol works.
+* *Everyone who's contributed to m8c!*
 
 Disclaimer: I'm not a coder and hardly understand C, use at your own risk :)
 
@@ -249,7 +249,7 @@ sudo apt update && sudo apt install -y git gcc make libsdl2-dev libserialport-de
 This assumes you have [installed brew](https://docs.brew.sh/Installation)
 
 ```
-brew update && brew install -y git gcc make sdl2 libserialport pkg-config
+brew update && brew install git gcc make sdl2 libserialport pkg-config
 ```
 ### Download source code (All)
 
@@ -297,14 +297,18 @@ Additional controls:
 * Esc = toggle keyjazz on/off 
 * r / select+start+opt+edit = reset display (if glitches appear on the screen, use this)
 
+### Keyjazz
 Keyjazz allows to enter notes with keyboard, oldschool tracker-style. The layout is two octaves, starting from keys Z and Q.
-When keyjazz is active, regular a/s/z/x keys are disabled.
+When keyjazz is active, regular a/s/z/x keys are disabled. The base octave can be adjusted with numpad star/divide keys and the velocity can be set 
+
+* Numpad asterisk (\*): increase base octave
+* Numpad divide (/): decrease base ooctave
+* Numpad plus (+): increase velocity
+* Numpad minus (-): decrease velocity
 
 ## Gamepads
 
-The program uses SDL's game controller system, which should make it work automagically with most gamepads.
-
-Enjoy making some nice music!
+The program uses SDL's game controller system, which should make it work automagically with most gamepads. On startup, the program tries to load a SDL game controller database named gamecontrollerdb.txt from the same directory as the config file. If your joypad doesn't work out of the box, you might need to create custom bindings to this file, for example with [SDL2 Gamepad Tool](https://generalarcade.com/gamepadtool/).
 
 ## Config
 
@@ -316,6 +320,8 @@ If not found, the file will be created in one of these locations:
 * MacOS: `/Users/<username>/Library/Application Support/m8c/config.ini`
 
 See the `config.ini.sample` file to see the available options.
+
+Enjoy making some nice music!
 
 -----------
 
@@ -338,7 +344,7 @@ $ ls -la /dev/ttyACM1
 crw-rw---- 1 root dialout 166, 0 Jan  8 14:51 /dev/ttyACM0
 ```
 
-This shows that the serial port is owned by the user 'root' and the grou 'dialout'. Both the user and the group have read/write permissions. To add a user to the group, run this command, replacing 'dialout' with the group shown on your own system:
+This shows that the serial port is owned by the user 'root' and the group 'dialout'. Both the user and the group have read/write permissions. To add a user to the group, run this command, replacing 'dialout' with the group shown on your own system:
 
     sudo adduser $USER dialout
 

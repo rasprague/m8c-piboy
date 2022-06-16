@@ -10,6 +10,10 @@ fullscreen=false
 use_gpu=true
 ; set this to true to disable the mouse cursor at startup
 diable_cursor=false
+; the delay amount in ms in the main loop, decrease value for faster operation, increase value if too much cpu usage
+idle_ms = 10
+; show a spinning cube if device is not inserted
+wait_for_device = true
 
 [keyboard]
 ; these need to be the decimal value of the SDL scancodes.
