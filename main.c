@@ -89,11 +89,6 @@ int main(int argc, char *argv[]) {
   SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
 #endif
 
-  // HACK force game controllers scan
-  // do it twice and your PiBoy controls will work just nice
-  initialize_game_controllers();
-  initialize_game_controllers();
-
   // force disable mouse cursor
   if (conf.init_disable_cursor) {
     SDL_ShowCursor(SDL_DISABLE);
