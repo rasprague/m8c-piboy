@@ -12,7 +12,6 @@ Let's all enjoy the M8 software in a GameBoy style, while we wait for the offici
 See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
 ### Notable changes
-- [HACK force game controllers scan for PiBoy](https://github.com/rasprague/m8c-piboy/commit/f43110a650ecbf0918eba05c9e898f03cdaa4bdf)
 - [add SDL controller line for PiBoy DMG to gamecontrollerdb.txt](https://github.com/rasprague/m8c-piboy/commit/7e59edb765d3f883a72e8de655d1eea0271f27e7)
 - [add game controller line for Waveshare Game HAT](https://github.com/rasprague/m8c-piboy/commit/4318ff1807f902c41fb0e88e37bf56413f16675e)
 - [add m8c startup shell scripts](https://github.com/rasprague/m8c-piboy/commit/f0b0909de3c5786992d8b540f5d09f841aeb7e33)
