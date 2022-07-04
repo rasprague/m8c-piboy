@@ -13,6 +13,7 @@ typedef struct config_params_s {
   int init_disable_cursor;
   int idle_ms;
   int wait_for_device;
+  int wait_packets;
 
   int key_up;
   int key_left;
@@ -37,6 +38,8 @@ typedef struct config_params_s {
   int gamepad_start;
   int gamepad_opt;
   int gamepad_edit;
+  int gamepad_quit;
+  int gamepad_reset;
 
   int gamepad_analog_threshold;
   int gamepad_analog_invert;
