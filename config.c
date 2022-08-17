@@ -27,7 +27,7 @@ config_params_s init_config() {
   c.init_disable_cursor = 0;
   c.idle_ms = 10;        // default to high performance
   c.wait_for_device = 0; // default to exit if device disconnected
-  c.wait_packets = 128;   // default zero-byte attempts to disconnect (about 2 sec for default idle_ms)
+  c.wait_packets = 1024;   // default zero-byte attempts to disconnect (about 2 sec for default idle_ms)
 
   c.key_up = SDL_SCANCODE_UP;
   c.key_left = SDL_SCANCODE_LEFT;
