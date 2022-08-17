@@ -3,11 +3,11 @@
 Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on
 - PiBoy DMG
   - Tested on Raspberry Pi 3 B+ with RetroPie v4.7.1
-  - reported working on Raspberry Pi 4.
+  - Tested on Raspberry Pi 4 B with the oficial [PiBoy DMG Image](https://experimentalpi.com/downloads.html).
 - WaveShare Game HAT
   - Tested on Raspberry Pi 3 B+ with RetroPie v4.8.
 
-Let's all enjoy the M8 software in a GameBoy style, while we wait for the official M8 hardware!
+Let's all enjoy the M8 software in a LSDJ/GameBoy style, while we wait for the official M8 hardware (support Dirtywave, [go pre-order one](https://dirtywave.com/products/m8-tracker))!
 
 See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
