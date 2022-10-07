@@ -3,7 +3,7 @@
 Changes (hacks) to the [m8c M8 tracker client](https://github.com/laamaa/m8c) for use on
 - PiBoy DMG
   - Tested on Raspberry Pi 3 B+ with RetroPie v4.7.1
-  - Tested on Raspberry Pi 4 B with the oficial [PiBoy DMG Image](https://experimentalpi.com/downloads.html).
+  - Tested on Raspberry Pi 4 B with the official [PiBoy DMG Image](https://experimentalpi.com/downloads.html).
 - WaveShare Game HAT
   - Tested on Raspberry Pi 3 B+ with RetroPie v4.8.
 
