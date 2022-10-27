@@ -11,6 +11,16 @@ Let's all enjoy the M8 software in a LSDJ/GameBoy style, while we wait for the o
 
 See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
+# Introduction
+
+The [Dirtywave M8 Tracker](https://dirtywave.com/products/m8-tracker) is a portable sequencer and synthesizer, featuring 8 tracks of assignable instruments such as FM, waveform synthesis, virtual analog, sample playback, and MIDI output. It is powered by a [Teensy](https://www.pjrc.com/teensy/) micro-controller and inspired by the Gameboy tracker [Little Sound DJ](https://www.littlesounddj.com/lsd/index.php).
+
+While Dirtywave makes new batches of units available on a regular basis, M8 is sometimes sold out due to the worldwide chip shortage and high demand of the unit. To fill this gap and and to allow users to freely test this wonderful tracker, [Timothy Lamb](https://github.com/trash80) was kind enough to make the [M8 Headless](https://github.com/Dirtywave/M8HeadlessFirmware) available to everyone.
+
+If you like the M8 and you gel with the tracker workflow, please support [Dirtywave](https://dirtywave.com/) by purchasing the actual unit. You can check its availability [here](https://dirtywave.com/products/m8-tracker). Meanwhile, you can also subscribe to Timothy Lamb's [Patreon](https://www.patreon.com/trash80).
+
+*m8c* is a client for Dirtywave M8 tracker's headless mode. *m8c-piboy* is a fork of *m8c* for running on PiBoy-DMG, WaveShare Game HAT, and other hardware configurations running RetroPie.
+
 ### Notable changes
 - [add SDL controller line for PiBoy DMG to gamecontrollerdb.txt](https://github.com/rasprague/m8c-piboy/commit/7e59edb765d3f883a72e8de655d1eea0271f27e7)
 - [add game controller line for Waveshare Game HAT](https://github.com/rasprague/m8c-piboy/commit/4318ff1807f902c41fb0e88e37bf56413f16675e)
