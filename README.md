@@ -11,7 +11,7 @@ Let's all enjoy the M8 software in a LSDJ/GameBoy style, while we wait for the o
 
 See it in action here https://www.youtube.com/watch?v=wgCUPZheRhA
 
-# Introduction
+# Introduction (from [laamaa](https://github.com/laamaa))
 
 The [Dirtywave M8 Tracker](https://dirtywave.com/products/m8-tracker) is a portable sequencer and synthesizer, featuring 8 tracks of assignable instruments such as FM, waveform synthesis, virtual analog, sample playback, and MIDI output. It is powered by a [Teensy](https://www.pjrc.com/teensy/) micro-controller and inspired by the Gameboy tracker [Little Sound DJ](https://www.littlesounddj.com/lsd/index.php).
 
