@@ -11,4 +11,9 @@ build/
 compile_commands.json
 .clangd
 result*
+cmake-build-*
+.idea
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
 *~

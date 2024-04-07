@@ -4,25 +4,29 @@
 // Contains portions of code from libserialport's examples released to the
 // public domain
 
-#include <SDL_log.h>
+#ifndef USE_LIBUSB
+#include <SDL.h>
 #include <libserialport.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "serial.h"
+
+struct sp_port *m8_port = NULL;
 
 // Helper function for error handling
 static int check(enum sp_return result);
 
-static int detect_m8_serial_device(struct sp_port *port) {
+static int detect_m8_serial_device(struct sp_port *m8_port) {
   // Check the connection method - we want USB serial devices
-  enum sp_transport transport = sp_get_port_transport(port);
+  enum sp_transport transport = sp_get_port_transport(m8_port);
 
   if (transport == SP_TRANSPORT_USB) {
     // Get the USB vendor and product IDs.
     int usb_vid, usb_pid;
-    sp_get_port_usb_vid_pid(port, &usb_vid, &usb_pid);
+    sp_get_port_usb_vid_pid(m8_port, &usb_vid, &usb_pid);
 
     if (usb_vid == 0x16C0 && usb_pid == 0x048A)
       return 1;
@@ -31,8 +35,29 @@ static int detect_m8_serial_device(struct sp_port *port) {
   return 0;
 }
 
+int list_devices() {
+  struct sp_port **port_list;
+  enum sp_return result = sp_list_ports(&port_list);
+
+  if (result != SP_OK) {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "sp_list_ports() failed!\n");
+    abort();
+  }
+
+  for (int i = 0; port_list[i] != NULL; i++) {
+    struct sp_port *port = port_list[i];
+
+    if (detect_m8_serial_device(port)) {
+      SDL_Log("Found M8 device: %s", sp_get_port_name(port));
+    }
+  }
+
+  sp_free_port_list(port_list);
+  return 0;
+}
+
 // Checks for connected devices and whether the specified device still exists
-int check_serial_port(struct sp_port *m8_port) {
+int check_serial_port() {
 
   int device_found = 0;
 
@@ -62,13 +87,15 @@ int check_serial_port(struct sp_port *m8_port) {
 
   sp_free_port_list(port_list);
   return device_found;
-
 }
 
-struct sp_port *init_serial(int verbose) {
+int init_serial(int verbose, char *preferred_device) {
+  if (m8_port != NULL) {
+    // Port is already initialized
+    return 1;
+  }
   /* A pointer to a null-terminated array of pointers to
    * struct sp_port, which will contain the ports found.*/
-  struct sp_port *m8_port = NULL;
   struct sp_port **port_list;
 
   if (verbose)
@@ -89,8 +116,13 @@ struct sp_port *init_serial(int verbose) {
     struct sp_port *port = port_list[i];
 
     if (detect_m8_serial_device(port)) {
-      SDL_Log("Found M8 in %s.\n", sp_get_port_name(port));
+      char *port_name = sp_get_port_name(port);
+      SDL_Log("Found M8 in %s.\n", port_name);
       sp_copy_port(port, &m8_port);
+      if (preferred_device != NULL && strcmp(preferred_device, port_name) == 0) {
+        SDL_Log("Found preferred device, breaking");
+        break;
+      }
     }
   }
 
@@ -103,33 +135,35 @@ struct sp_port *init_serial(int verbose) {
 
     result = sp_open(m8_port, SP_MODE_READ_WRITE);
     if (check(result) != SP_OK)
-      return NULL;
+      return 0;
 
     result = sp_set_baudrate(m8_port, 115200);
     if (check(result) != SP_OK)
-      return NULL;
+      return 0;
 
     result = sp_set_bits(m8_port, 8);
     if (check(result) != SP_OK)
-      return NULL;
+      return 0;
 
     result = sp_set_parity(m8_port, SP_PARITY_NONE);
     if (check(result) != SP_OK)
-      return NULL;
+      return 0;
 
     result = sp_set_stopbits(m8_port, 1);
     if (check(result) != SP_OK)
-      return NULL;
+      return 0;
 
     result = sp_set_flowcontrol(m8_port, SP_FLOWCONTROL_NONE);
     if (check(result) != SP_OK)
-      return NULL;
+      return 0;
   } else {
-    if (verbose)
+    if (verbose) {
       SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "Cannot find a M8.\n");
+    }
+    return 0;
   }
 
-  return (m8_port);
+  return 1;
 }
 
 // Helper function for error handling.
@@ -160,3 +194,89 @@ static int check(enum sp_return result) {
   }
   return result;
 }
+
+int reset_display() {
+  int result;
+
+  SDL_Log("Reset display\n");
+
+  char buf[1] = {'R'};
+  result = sp_blocking_write(m8_port, buf, 1, 5);
+  if (result != 1) {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Error resetting M8 display, code %d",
+                 result);
+    return 0;
+  }
+  return 1;
+}
+
+int enable_and_reset_display() {
+  int result;
+
+  SDL_Log("Enabling and resetting M8 display\n");
+
+  char buf[1] = {'E'};
+  result = sp_blocking_write(m8_port, buf, 1, 5);
+  if (result != 1) {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Error enabling M8 display, code %d",
+                 result);
+    return 0;
+  }
+
+  result = reset_display();
+
+  return result;
+}
+
+int disconnect() {
+  int result;
+
+  SDL_Log("Disconnecting M8\n");
+
+  char buf[1] = {'D'};
+  
+  result = sp_blocking_write(m8_port, buf, 1, 5);
+  if (result != 1) {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Error sending disconnect, code %d",
+                 result);
+    result = 0;
+  }
+  sp_close(m8_port);
+  sp_free_port(m8_port);
+  m8_port = NULL;
+  return result;
+}
+
+int serial_read(uint8_t *serial_buf, int count) {
+  return sp_nonblocking_read(m8_port, serial_buf, count);
+}
+
+int send_msg_controller(uint8_t input) {
+  char buf[2] = {'C', input};
+  size_t nbytes = 2;
+  int result;
+  result = sp_blocking_write(m8_port, buf, nbytes, 5);
+  if (result != nbytes) {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Error sending input, code %d",
+                 result);
+    return -1;
+  }
+  return 1;
+}
+
+int send_msg_keyjazz(uint8_t note, uint8_t velocity) {
+  if (velocity > 0x7F)
+    velocity = 0x7F;
+  char buf[3] = {'K', note, velocity};
+  size_t nbytes = 3;
+  int result;
+  result = sp_blocking_write(m8_port, buf, nbytes, 5);
+  if (result != nbytes) {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Error sending keyjazz, code %d",
+                 result);
+    return -1;
+  }
+
+  return 1;
+}
+#endif

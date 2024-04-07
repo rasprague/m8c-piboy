@@ -4,10 +4,10 @@
 #include <SDL.h>
 #include <stdio.h>
 
+#include "SDL_timer.h"
 #include "config.h"
 #include "input.h"
 #include "render.h"
-#include "write.h"
 
 #define MAX_CONTROLLERS 4
 
@@ -365,12 +365,12 @@ void handle_sdl_events(config_params_s *conf) {
 
   // Read special case game controller buttons quit and reset
   for (int gc = 0; gc < num_joysticks; gc++) {
-    if (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_quit) && 
-        (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_select) || 
+    if (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_quit) &&
+        (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_select) ||
         SDL_GameControllerGetAxis(game_controllers[gc], conf->gamepad_analog_axis_select)))
       key = (input_msg_s){special, msg_quit};
-    else if (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_reset) && 
-            (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_select) || 
+    else if (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_reset) &&
+            (SDL_GameControllerGetButton(game_controllers[gc], conf->gamepad_select) ||
               SDL_GameControllerGetAxis(game_controllers[gc], conf->gamepad_analog_axis_select)))
       key = (input_msg_s){special, msg_reset_display};
   }
@@ -393,8 +393,12 @@ void handle_sdl_events(config_params_s *conf) {
   case SDL_WINDOWEVENT:
     if (event.window.event == SDL_WINDOWEVENT_RESIZED)
     {
-      SDL_Log("Resizing window...");
-      key = (input_msg_s){special, msg_reset_display};      
+      static uint32_t ticks_window_resized = 0;
+      if (SDL_GetTicks() - ticks_window_resized > 500) {
+        SDL_Log("Resizing window...");
+        key = (input_msg_s){special, msg_reset_display};
+        ticks_window_resized = SDL_GetTicks();
+      }
     }
     break;
 
@@ -462,7 +466,7 @@ input_msg_s get_input_msg(config_params_s *conf) {
   // Query for SDL events
   handle_sdl_events(conf);
 
-  if (keycode == (key_start | key_select | key_opt | key_edit)) {
+  if (!keyjazz_enabled && keycode == (key_start | key_select | key_opt | key_edit)) {
     key = (input_msg_s){special, msg_reset_display};
   }
 

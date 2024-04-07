@@ -14,6 +14,9 @@ typedef struct config_params_s {
   int idle_ms;
   int wait_for_device;
   int wait_packets;
+  int audio_enabled;
+  int audio_buffer_size;
+  const char *audio_device_name;
 
   int key_up;
   int key_left;
@@ -54,7 +57,8 @@ typedef struct config_params_s {
 
 
 config_params_s init_config();
-void read_config();
+void read_config(config_params_s *conf);
+void read_audio_config(ini_t *config, config_params_s *conf);
 void read_graphics_config(ini_t *config, config_params_s *conf);
 void read_key_config(ini_t *config, config_params_s *conf);
 void read_gamepad_config(ini_t *config, config_params_s *conf);

@@ -6,19 +6,16 @@
 // #define DEBUG_MSG
 
 #include <SDL.h>
-#include <libserialport.h>
 #include <signal.h>
 
+#include "SDL2_inprint.h"
+#include "audio.h"
 #include "command.h"
 #include "config.h"
 #include "input.h"
 #include "render.h"
 #include "serial.h"
 #include "slip.h"
-#include "write.h"
-
-// maximum amount of bytes to read from the serial in one read()
-#define serial_read_size 324
 
 enum state { QUIT, WAIT_FOR_DEVICE, RUN };
 
@@ -28,13 +25,20 @@ uint8_t need_display_reset = 0;
 // Handles CTRL+C / SIGINT
 void intHandler(int dummy) { run = QUIT; }
 
-void close_serial_port(struct sp_port *port) {
-  disconnect(port);
-  sp_close(port);
-  sp_free_port(port);
-}
+void close_serial_port() { disconnect(); }
 
 int main(int argc, char *argv[]) {
+
+  if(argc == 2 && strcmp(argv[1], "--list") == 0) {
+    return list_devices();
+  }
+
+  char *preferred_device = NULL;
+  if (argc == 3 && strcmp(argv[1], "--dev") == 0) {
+    preferred_device = argv[2];
+    SDL_Log("Using preferred device %s.\n", preferred_device);
+  }
+
   // Initialize the config to defaults read in the params from the
   // configfile if present
   config_params_s conf = init_config();
@@ -43,9 +47,11 @@ int main(int argc, char *argv[]) {
   read_config(&conf);
 
   // allocate memory for serial buffer
-  uint8_t *serial_buf = malloc(serial_read_size);
+  uint8_t *serial_buf = SDL_malloc(serial_read_size);
 
   static uint8_t slip_buffer[serial_read_size]; // SLIP command buffer
+
+  SDL_zero(slip_buffer);
 
   // settings for the slip packet handler
   static const slip_descriptor_s slip_descriptor = {
@@ -56,7 +62,6 @@ int main(int argc, char *argv[]) {
   };
 
   static slip_handler_s slip;
-  struct sp_port *port = NULL;
 
   uint8_t prev_input = 0;
   uint8_t prev_note = 0;
@@ -64,14 +69,16 @@ int main(int argc, char *argv[]) {
 
   signal(SIGINT, intHandler);
   signal(SIGTERM, intHandler);
-
+#ifdef SIGQUIT
+  signal(SIGQUIT, intHandler);
+#endif
   slip_init(&slip, &slip_descriptor);
 
-  // First device detection to avoid SDL init if it isn't necessary
+  // First device detection to avoid SDL init if it isn't necessary. To be run
+  // only if we shouldn't wait for M8 to be connected.
   if (conf.wait_for_device == 0) {
-    port = init_serial(1);
-    if (port == NULL) {
-      free(serial_buf);
+    if (init_serial(1, preferred_device) == 0) {
+      SDL_free(serial_buf);
       return -1;
     }
   }
@@ -94,30 +101,38 @@ int main(int argc, char *argv[]) {
 
   // main loop begin
   do {
-    if (port == NULL)
-      port = init_serial(1);
-    if (port != NULL) {
-      int result;
-      result = enable_and_reset_display(port);
-      if (result == 1) {
-        run = RUN;
+    // try to init serial port
+    int port_inited = init_serial(1, preferred_device);
+    // if port init was successful, try to enable and reset display
+    if (port_inited == 1 && enable_and_reset_display(0) == 1) {
+      // if audio routing is enabled, try to initialize audio devices
+      if (conf.audio_enabled == 1) {
+        audio_init(conf.audio_buffer_size, conf.audio_device_name);
+        // if audio is enabled, reset the display for second time to avoid glitches
+        reset_display();
+      }
+      run = RUN;
+    } else {
+      SDL_LogCritical(SDL_LOG_CATEGORY_ERROR,
+                      "Device not detected on begin loop.");
+      if (conf.wait_for_device == 1) {
+        run = WAIT_FOR_DEVICE;
       } else {
-        SDL_LogCritical(SDL_LOG_CATEGORY_ERROR,
-                        "Device not detected on begin loop.");
         run = QUIT;
       }
     }
 
     // wait until device is connected
-    if (conf.wait_for_device) {
+    if (conf.wait_for_device == 1) {
       static uint32_t ticks_poll_device = 0;
       static uint32_t ticks_update_screen = 0;
 
-      if (port == NULL)
+      if (port_inited == 0) {
         screensaver_init();
+      }
 
       while (run == WAIT_FOR_DEVICE) {
-        // get current inputs
+        // get current input
         input_msg_s input = get_input_msg(&conf);
         if (input.type == special && input.value == msg_quit) {
           SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Input message QUIT.");
@@ -131,15 +146,23 @@ int main(int argc, char *argv[]) {
         }
 
         // Poll for M8 device every second
-        if (!port && (SDL_GetTicks() - ticks_poll_device > 1000)) {
+        if (port_inited == 0 && (SDL_GetTicks() - ticks_poll_device > 1000)) {
           ticks_poll_device = SDL_GetTicks();
-          port = init_serial(0);
-          if (run == WAIT_FOR_DEVICE && port != NULL) {
-            int result = enable_and_reset_display(port);
-            SDL_Delay(100);
+          if (run == WAIT_FOR_DEVICE && init_serial(0, preferred_device) == 1) {
+
+            if (conf.audio_enabled == 1) {
+              if (audio_init(conf.audio_buffer_size, conf.audio_device_name) ==
+                  0) {
+                SDL_Log("Cannot initialize audio");
+                conf.audio_enabled = 0;
+              }
+            }
+
+            int result = enable_and_reset_display();
             // Device was found; enable display and proceed to the main loop
             if (result == 1) {
               run = RUN;
+              port_inited = 1;
               screensaver_destroy();
             } else {
               SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Device not detected.");
@@ -148,17 +171,19 @@ int main(int argc, char *argv[]) {
             }
           }
         }
-
         SDL_Delay(conf.idle_ms);
       }
-
     } else {
       // classic startup behaviour, exit if device is not found
-      if (port == NULL) {
+      if (port_inited == 0) {
+        if (conf.audio_enabled == 1) {
+          audio_destroy();
+        }
         close_game_controllers();
         close_renderer();
+        kill_inline_font();
+        SDL_free(serial_buf);
         SDL_Quit();
-        free(serial_buf);
         return -1;
       }
       render_screen();
@@ -174,16 +199,16 @@ int main(int argc, char *argv[]) {
       case normal:
         if (input.value != prev_input) {
           prev_input = input.value;
-          send_msg_controller(port, input.value);
+          send_msg_controller(input.value);
         }
         break;
       case keyjazz:
         if (input.value != 0) {
           if (input.eventType == SDL_KEYDOWN && input.value != prev_input) {
-            send_msg_keyjazz(port, input.value, input.value2);
+            send_msg_keyjazz(input.value, input.value2);
             prev_note = input.value;
           } else if (input.eventType == SDL_KEYUP && input.value == prev_note) {
-            send_msg_keyjazz(port, 0xFF, 0);
+            send_msg_keyjazz(0xFF, 0);
           }
         }
         prev_input = input.value;
@@ -197,7 +222,7 @@ int main(int argc, char *argv[]) {
             run = 0;
             break;
           case msg_reset_display:
-            reset_display(port);
+            reset_display();
             break;
           default:
             break;
@@ -208,8 +233,7 @@ int main(int argc, char *argv[]) {
 
       while (1) {
         // read serial port
-        int bytes_read =
-            sp_nonblocking_read(port, serial_buf, serial_read_size);
+        int bytes_read = serial_read(serial_buf, serial_read_size);
         if (bytes_read < 0) {
           SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Error %d reading serial. \n",
                           (int)bytes_read);
@@ -226,7 +250,7 @@ int main(int argc, char *argv[]) {
             int n = slip_read_byte(&slip, *(cur++));
             if (n != SLIP_NO_ERROR) {
               if (n == SLIP_ERROR_INVALID_PACKET) {
-                reset_display(port);
+                reset_display();
               } else {
                 SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SLIP error %d\n", n);
               }
@@ -239,13 +263,16 @@ int main(int argc, char *argv[]) {
             zerobyte_packets = 0;
 
             // try opening the serial port to check if it's alive
-            if (check_serial_port(port)) {
+            if (check_serial_port()) {
               // the device is still there, carry on
               break;
             } else {
+              port_inited = 0;
               run = WAIT_FOR_DEVICE;
-              close_serial_port(port);
-              port = NULL;
+              close_serial_port();
+              if (conf.audio_enabled == 1) {
+                audio_destroy();
+              }
               /* we'll make one more loop to see if the device is still there
                * but just sending zero bytes. if it doesn't get detected when
                * resetting the port, it will disconnect */
@@ -262,10 +289,14 @@ int main(int argc, char *argv[]) {
 
   // exit, clean up
   SDL_Log("Shutting down\n");
+  if (conf.audio_enabled == 1) {
+    audio_destroy();
+  }
   close_game_controllers();
   close_renderer();
-  close_serial_port(port);
-  free(serial_buf);
+  close_serial_port();
+  SDL_free(serial_buf);
+  kill_inline_font();
   SDL_Quit();
   return 0;
 }

@@ -17,6 +17,7 @@ with pkgs;
 let m8c-package =
   { stdenv
   , gnumake
+  , pkg-config
   , SDL2
   , libserialport
   , fetchFromGitHub
@@ -24,7 +25,7 @@ let m8c-package =
 
   let
     pname = "m8c";
-    version = "1.0.3";
+    version = "1.6.0";
   in
     stdenv.mkDerivation {
       inherit pname version;
@@ -33,11 +34,11 @@ let m8c-package =
         owner = "laamaa";
         repo = pname;
         rev = "v${version}";
-        hash = "sha256:0yrd6lnb2chgafhw1cz4awx2s1sws6mch5irvgyddgnsa8ishcr5";
+        hash = "sha256:1sv1d419mgymh2xcrisnk26qqr77ldb3xp7k1qm3s6cvlil42n0n";
       };
 
       installFlags = [ "PREFIX=$(out)" ];
-      nativeBuildInputs = [ gnumake ];
+      nativeBuildInputs = [ gnumake pkg-config ];
       buildInputs = [ SDL2 libserialport ];
     };
 in {
